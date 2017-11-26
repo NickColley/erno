@@ -1,0 +1,61 @@
+{
+  "name": "Ernő",
+  "version": "1.0.0",
+  "description": "Rubik's Cube Timer",
+  "main": "server.js",
+  "scripts": {
+    "start": "if [[ ${NODE_ENV} == \"production\" ]]; then npm run start:prod; else npm run start:dev; fi",
+    "start:dev": "node server.js",
+    "start:prod": "NODE_ENV=production npm run build:prod && node server.js",
+    "build:prod": "NODE_ENV=production webpack --config webpack.prod.js"
+  },
+  "engines": {
+    "node": "8.9.x"
+  },
+  "dependencies": {
+    "nunjucks": "^3.0.1",
+    "express": "^4.16.2",
+    "scrambo": "^0.3.0",
+    "compression": "^1.7.1",
+    "pepjs": "^0.4.3"
+  },
+  "devDependencies": {
+    "webpack": "^3.8.1",
+    "webpack-dev-middleware": "^1.12.1",
+    "webpack-merge": "^4.1.1",
+    "babel-plugin-dynamic-import-webpack": "^1.0.2",
+    "style-loader": "^0.19.0",
+    "css-loader": "^0.28.7",
+    "postcss-loader": "^2.0.9",
+    "postcss-inject-css-variables": "^0.0.2",
+    "postcss-cssnext": "^3.0.2",
+    "cssnano": "^3.10.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-webpack-inline-source-plugin": "^0.0.9",
+    "html-webpack-plugin": "^2.30.1",
+    "webpack-pwa-manifest": "^3.3.2",
+    "workbox-webpack-plugin": "^2.1.2",
+    "clean-webpack-plugin": "^0.1.17",
+    "babel-loader": "^7.1.2",
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "uglifyjs-webpack-plugin": "^1.1.1"
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ],
+    "plugins": [
+      "dynamic-import-webpack"
+    ]
+  },
+  "repository": {
+    "url": "https://glitch.com/edit/#!/erno"
+  },
+  "license": "MIT",
+  "keywords": [
+    "rubik",
+    "timer",
+    "cube"
+  ]
+}
