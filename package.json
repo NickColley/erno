@@ -1,13 +1,12 @@
 {
-  "name": "Ernő",
+  "name": "Erno",
   "version": "1.0.0",
   "description": "Rubik's Cube Timer",
   "main": "server.js",
   "scripts": {
     "start": "if [[ ${NODE_ENV} == \"production\" ]]; then npm run start:prod; else npm run start:dev; fi",
     "start:dev": "node server.js",
-    "start:prod": "NODE_ENV=production npm run build:prod && node server.js",
-    "build:prod": "NODE_ENV=production webpack --config webpack.prod.js"
+    "start:prod": "webpack --config webpack.prod.js && node server.js"
   },
   "engines": {
     "node": "8.9.x"
