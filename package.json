@@ -4,12 +4,13 @@
   "description": "Rubik's Cube Timer",
   "main": "server.js",
   "scripts": {
-    "start": "if [[ ${NODE_ENV} == \"production\" ]]; then npm run start:prod; else npm run start:dev; fi",
+    "start": "npm run start:prod",
     "start:dev": "node server.js",
-    "start:prod": "webpack --config webpack.prod.js && node server.js"
+    "start:prod": "NODE_ENV=production node server.js",
+    "build": "NODE_ENV=production webpack --config webpack.prod.js"
   },
   "engines": {
-    "node": "8.9.x"
+    "node": "8.9.1"
   },
   "dependencies": {
     "nunjucks": "^3.0.1",

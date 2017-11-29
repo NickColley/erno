@@ -10,9 +10,9 @@ const threebythree = new Scrambo();
 
 if (ENV !== 'production') {
   const webpack = require('webpack');
-  
+
   const webpackDevMiddleware = require('webpack-dev-middleware');
-    
+
   const config = require('./webpack.dev.js');
   const compiler = webpack(config);
 
@@ -23,10 +23,11 @@ if (ENV !== 'production') {
 
 // Force https
 app.use(function(request, response, next) {
-  if (!request.headers['x-forwarded-proto'].includes('https')) {
+  const forwardedHeader = request.headers['x-forwarded-proto']
+  if (forwardedHeader && !forwardedHeader.includes('https')) {
     return response.redirect(301, 'https://' + request.headers.host + '/');
   }
-  
+
   next();
 });
 
@@ -44,9 +45,10 @@ app.get("/", function (request, response) {
 let staticOptions = {}
 
 if (ENV === 'production') {
+  const oneDay = 86400000;
   staticOptions = {
     immutable: true,
-    maxAge: 31536000,
+    maxAge: oneDay * 30,
     setHeaders: setCustomCacheControl
   }
   function setCustomCacheControl (response, path) {

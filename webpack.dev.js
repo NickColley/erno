@@ -8,7 +8,7 @@ const HtmlPlugin = require('html-webpack-plugin');
 const { DIST, HTML_WEBPACK_PLUGIN_OPTIONS } = require('./constants.js');
 const common = require('./webpack.common.js');
 
-module.exports = merge(common, {
+module.exports = merge.smart(common, {
   plugins: [
     new HtmlPlugin(HTML_WEBPACK_PLUGIN_OPTIONS)
   ],
