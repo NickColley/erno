@@ -275,15 +275,16 @@ function chunkArray (array, size) {
 }
 
 
+// TODO: Use scramble and draw actual scramble
 function randomiseCube() {
   const logoCubies = document.querySelectorAll('.logo__cubie');
-  
-  const middleCubieIndex = 4 
-  
-  logoCubies.forEach((logoCubie, i) => {
-    const isMiddleCubie = i === middleCubieIndex
+
+  const middleCubieIndex = 4
+
+  logoCubies.forEach((logoCubie, index) => {
+    const isMiddleCubie = index === middleCubieIndex
     const cubieColor = isMiddleCubie ? 'green' : randomColor()
-    logoCubie.classList.add(`logo__cubie--${cubieColor}`);
+    logoCubie.setAttribute('class', `logo__cubie logo__cubie--${cubieColor}`);
   })
 }
 
@@ -326,5 +327,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.localStorage.setItem('times', JSON.stringify(times))
     renderScramble()
     renderTimes()
+    randomiseCube()
   })
 })
