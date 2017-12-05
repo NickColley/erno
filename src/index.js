@@ -57,14 +57,14 @@ function bodyOrContext(element) {
 function addKeyListener(context, keyCode, handleDown, handleUp) {
   var isKeydown = false // Ensure repeat keys are not triggered
   document.addEventListener('keydown', event => {
-    if (isKeydown) {
-      return;
+    if (event.keyCode === keyCode && bodyOrContext(context)) {
+      event.preventDefault();
+      if (isKeydown) {
+        return;
+      }
+      handleDown(event);
     }
     isKeydown = true;
-    if (event.keyCode === keyCode && bodyOrContext(context)) {
-      handleDown(event);
-      event.preventDefault();
-    }
   }, false)
   document.addEventListener('keyup', event => {
     isKeydown = false;
