@@ -89,6 +89,7 @@ function Timer(callback) {
   var timerOriginalClassName = $timer.className.slice(0)
 
   $timer.addEventListener('pointerdown', handlePointerDown)
+  $timer.addEventListener('pointercancel', handlePointerCancel)
   $timer.addEventListener('pointerup', handlePointerUp)
   
   addKeyListener($timer, 32, handlePointerDown, handlePointerUp)
@@ -120,7 +121,12 @@ function Timer(callback) {
       debug('down:readyTimer()')
     }
   }
-  
+
+  function handlePointerCancel () {
+    stopTimer()
+    debug('cancel:stopTimer()')
+  }
+
   function handlePointerUp (event) {
     // See if they have waited after first pressing down
     var hasWaitedBeforeStarting = ((currentTime - readyTime) > READY_THRESHOLD)
