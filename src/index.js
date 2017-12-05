@@ -8,7 +8,7 @@ import { ENV } from '../constants.js'
 import Scrambo from 'scrambo'
 import './style.css'
 
-const APP_DEBUG = false;
+const APP_DEBUG = ENV === 'development';
 const MOVEMENT_THRESHOLD = 5;
 const STARTING_THRESHOLD = 1000;
 const READY_THRESHOLD = 100;
