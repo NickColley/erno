@@ -242,26 +242,30 @@ var times = JSON.parse(window.localStorage.getItem('times')) || []
 var $timesOutput = document.querySelector('.js-times-output')
 function renderTimes () {
   const averageOfFive = 5;
-  
+
   function renderTimes (time) {
     return `
       <details>
-        <summary>${time.timestamp}</summary>
-        ${time.id}
-        <br/>
+        <summary>
+          ${time.timestamp}
+          <span class="visually-hidden">time</span>
+        </summary>
         ${time.scramble}
         <br/>
-        <button id="${time.id}" class="js-delete-button button--danger">Delete</button>
+        <button id="${time.id}" class="js-delete-button button--danger">Delete time</button>
       </details>
     `
   }
-    
+
   var chunkedTimes = chunkArray(times, averageOfFive)
     .map(chunk => {
       if (chunk.length === averageOfFive) {
         return `<li>
           <details>
-            <summary>${averageArray(chunk.map(time => time.timestamp))} (average of five)</summary>
+            <summary>
+              ${averageArray(chunk.map(time => time.timestamp))} (average of five)
+              <span class="visually-hidden">time</span>
+            </summary>
             <ul>
               ${chunk.map(renderTimes).join('')}
             </ul>
@@ -270,9 +274,9 @@ function renderTimes () {
       }
       return `<li>${chunk.map(renderTimes).join('')}</li>`
     })
-  
+
   let deleteAllButtonHTML = `
-    <button class="js-delete-all-button button--danger">Delete all</button>
+    <button class="js-delete-all-button button--danger">Delete all times</button>
   `
 
   $timesOutput.innerHTML = `
