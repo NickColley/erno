@@ -41,7 +41,7 @@ function uuidv4() {
 
 
 function debug (attributes) {
-  if (APP_DEBUG) {  
+  if (APP_DEBUG) {
     console.log(attributes)
   }
 }
@@ -223,7 +223,7 @@ function Timer(callback) {
     window.requestAnimationFrame(renderLoop)
   })()
 }
- 
+
 function formatTimestamp (timestamp) {
   return (timestamp / 1000).toFixed(3)
 }
@@ -327,21 +327,27 @@ var $dialog = document.querySelector('.js-dialog')
 
 var hasNativeDialog = window.HTMLDialogElement !== undefined;
 var canUseDialog = hasNativeDialog;
-if (!hasNativeDialog) {
+if (hasNativeDialog) {
+  addDialogListener();
+} else {
   import(/* webpackChunkName: "dialog-polyfill"*/ 'dialog-polyfill')
     .then(dialogPolyfill => {
       dialogPolyfill.registerDialog($dialog);
-      canUseDialog = true;
-      $dialog.addEventListener('close', function (event) {
-        if ($dialog.returnValue !== 'true') {
-          return;
-        }
-        deleteAllTimes();
-      });
+      addDialogListener();
     })
     .catch(error => {
       console.error(error)
     })
+}
+
+function addDialogListener () {
+  canUseDialog = true;
+  $dialog.addEventListener('close', function (event) {
+    if ($dialog.returnValue !== 'true') {
+      return;
+    }
+    deleteAllTimes();
+  });
 }
 
 function deleteAllTimes () {
