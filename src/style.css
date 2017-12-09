@@ -70,6 +70,12 @@
   box-sizing: content-box;
 }
 
+[tabindex="-1"]:focus {
+  background: inherit !important;
+  color: inherit !important;
+  box-shadow: none;
+}
+
 html {
   background: var(--background-color);
   color: var(--text-color);
