@@ -93,7 +93,8 @@ function Timer(callback) {
 
   var $root = document.documentElement
   var $timer = document.querySelector('.js-timer')
-  
+  var $announcer = document.querySelector('.js-announcer')
+
   var timerOriginalClassName = $timer.className.slice(0)
 
   $timer.addEventListener('pointerdown', handlePointerDown)
@@ -167,16 +168,18 @@ function Timer(callback) {
       debug('up:stopTimer()')
     }
   }
-  
+
   function readyTimer () {
     state = 'ready'
+    announce = 'timer ready'
     readyTime = currentTime
     startTime = 0
     endTime = 0
   }
-  
+
   function startTimer () {
     state = 'running'
+    announce = 'timer running'
     startTime = currentTime
   }
 
@@ -201,18 +204,17 @@ function Timer(callback) {
   function updateCurrentTime () {
     currentTime = getTimestamp()
   }
-  
+
   function render () {
     if (state === 'ready') {
       $timer.innerHTML = formatTimestamp(0)
-    }
-    if (state === 'running') {
+    } else if (state === 'running') {
       $timer.innerHTML = formatTimestamp(
         currentTime - startTime
       )
     }
-
     $timer.className = `${timerOriginalClassName} timer--${state}`
+    $announcer.innerHTML = announce
   }
 
   (function renderLoop () {
@@ -325,6 +327,7 @@ document.addEventListener('click', event => {
     const id = target.id
     times = times.filter(time => time.id !== id);
     window.localStorage.setItem('times', JSON.stringify(times))
+    announce = 'time deleted'
     renderTimes()
   }
   if (target.classList.contains('js-delete-all-button')){
@@ -332,6 +335,7 @@ document.addEventListener('click', event => {
       // TODO: Replace this with an undo mode
       times = [];
       window.localStorage.setItem('times', JSON.stringify(times))
+      announce = 'all times deleted'
       renderTimes()
     }
   }
