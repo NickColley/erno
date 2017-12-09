@@ -322,6 +322,17 @@ function randomiseCube() {
   })
 }
 
+var $dialog = document.querySelector('.js-dialog')
+$dialog.addEventListener('close', function (event) {
+  if ($dialog.returnValue !== 'true') {
+    return;
+  }
+  times = [];
+  window.localStorage.setItem('times', JSON.stringify(times))
+  announce = 'all times deleted'
+  renderTimes()
+});
+
 document.addEventListener('click', event => {
   const target = event.target
   if (!target) {
@@ -335,13 +346,8 @@ document.addEventListener('click', event => {
     renderTimes()
   }
   if (target.classList.contains('js-delete-all-button')){
-    if (window.confirm('Are you sure you want to delete all your times?')) {
-      // TODO: Replace this with an undo mode
-      times = [];
-      window.localStorage.setItem('times', JSON.stringify(times))
-      announce = 'all times deleted'
-      renderTimes()
-    }
+    $dialog.showModal();
+    $dialog.querySelector('.js-dialog-description').focus();
   }
 })
 

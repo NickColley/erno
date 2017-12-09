@@ -9,6 +9,19 @@
     <link rel="shortcut icon" href="https://cdn.glitch.com/cc362deb-097e-40d2-a3e2-4380a07a5d39%2Ffavicon.ico?1511728736275" type="image/x-icon">
   </head>
   <body>
+    <dialog class="js-dialog dialog">
+      <form method="dialog">
+        <p tabindex="-1" class="js-dialog-description dialog__description">
+          Are you sure you want to delete all times?
+        </p>
+        <button class="dialog__button" type="submit" value="true">
+          Yes<span class="visually-hidden">, delete all times</span>
+        </button>
+        <button class="dialog__button" type="submit" value="false">
+          No<span class="visually-hidden">, do not delete all times</span>
+        </button>
+      </form>
+    </dialog>
     <header>
       <svg
         class="logo"

@@ -9,7 +9,7 @@
   --text-color: var(--white);
   --background-color: var(--black);
   --link-color: #79e6d9;
-  --border-radius: .1em;
+  --border-radius: .45rem;
   --focus-color: var(--yellow);
   --focus-width: 4px;
   --focus-width: .3rem;
@@ -39,7 +39,9 @@
       "Droid Sans Mono",
       "Source Code Pro",
       monospace;
-  
+
+  --dialog-color: var(--red);
+
   --timer-height: 2.5em;
   --timer-color: var(--background-color);
   --timer-background-color: var(--timer-background-color--idle);
@@ -138,6 +140,39 @@ summary {
 
 details[open] summary {
   margin-bottom: .5em;
+}
+
+.dialog {
+  background: var(--background-color);
+  color: inherit;
+  border-radius: var(--border-radius);
+  border: var(--focus-width) solid var(--dialog-color);
+}
+
+.dialog::backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.dialog__description {
+  margin-top: 0;
+}
+
+.dialog__button {
+  background: inherit;
+  border: none;
+  color: var(--dialog-color);
+  font-size: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  padding-top: .5em;
+  padding-bottom: .5em;
+  margin-right: 1em;
 }
 
 ul {
