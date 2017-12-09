@@ -322,16 +322,34 @@ function randomiseCube() {
   })
 }
 
+
 var $dialog = document.querySelector('.js-dialog')
-$dialog.addEventListener('close', function (event) {
-  if ($dialog.returnValue !== 'true') {
-    return;
-  }
+
+var hasNativeDialog = window.HTMLDialogElement !== undefined;
+var canUseDialog = hasNativeDialog;
+if (!hasNativeDialog) {
+  import(/* webpackChunkName: "dialog-polyfill"*/ 'dialog-polyfill')
+    .then(dialogPolyfill => {
+      dialogPolyfill.registerDialog($dialog);
+      canUseDialog = true;
+      $dialog.addEventListener('close', function (event) {
+        if ($dialog.returnValue !== 'true') {
+          return;
+        }
+        deleteAllTimes();
+      });
+    })
+    .catch(error => {
+      console.error(error)
+    })
+}
+
+function deleteAllTimes () {
   times = [];
   window.localStorage.setItem('times', JSON.stringify(times))
   announce = 'all times deleted'
   renderTimes()
-});
+}
 
 document.addEventListener('click', event => {
   const target = event.target
@@ -346,8 +364,12 @@ document.addEventListener('click', event => {
     renderTimes()
   }
   if (target.classList.contains('js-delete-all-button')){
-    $dialog.showModal();
-    $dialog.querySelector('.js-dialog-description').focus();
+    if (canUseDialog) {
+      $dialog.showModal();
+      $dialog.querySelector('.js-dialog-description').focus();
+    } else {
+      deleteAllTimes();
+    }
   }
 })
 
