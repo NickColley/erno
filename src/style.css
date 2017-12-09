@@ -5,7 +5,7 @@
   --orange: #ff6c00;
   --yellow: #fdcc09;
   --white: #fafafa;
-  
+
   --text-color: var(--white);
   --background-color: var(--black);
   --link-color: #79e6d9;
@@ -13,13 +13,13 @@
   --focus-color: var(--yellow);
   --focus-width: 4px;
   --focus-width: .3rem;
-  
+
   --spacing-gutter: 1.5rem;
-  
+
   --font-size: calc(20px * 2.5vh);
   --font-size: calc(5px * 5vh);
-  
-  --font-family: 
+
+  --font-family:
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
@@ -49,7 +49,7 @@
   --timer-background-color--ready: var(--focus-color);
   --timer-background-color--running: var(--green);
   --timer-background-color--fail: var(--red);
-  
+
   --logo-width: 9.5rem;
   --logo-height: 2rem;
   --logo-border-radius: 10px;
@@ -187,6 +187,7 @@ dialog.fixed {
   color: inherit;
   border-radius: var(--border-radius);
   border: var(--focus-width) solid var(--dialog-color);
+  max-width: 30em;
 }
 
 .dialog + .backdrop,
