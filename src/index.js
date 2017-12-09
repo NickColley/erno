@@ -54,28 +54,36 @@ function bodyOrContext(element) {
   )
 }
 
-function addKeyListener(context, keyCode, handleDown, handleUp) {
-  var isKeydown = false // Ensure repeat keys are not triggered
-  document.addEventListener('keydown', event => {
-    if (event.keyCode === keyCode && bodyOrContext(context)) {
-      event.preventDefault();
-      if (isKeydown) {
-        return;
-      }
-      handleDown(event);
-    }
-    isKeydown = true;
-  }, false)
-  document.addEventListener('keyup', event => {
-    isKeydown = false;
-    if (event.keyCode === keyCode && bodyOrContext(context)) {
-      handleUp(event);
-      event.preventDefault();
-    }
-  }, false)
-}
+var announce = ''
 
 function Timer(callback) {
+  var usingPointer = false;
+  function addKeyListener(context, keyCode, handleDown, handleUp) {
+    var isKeydown = false // Ensure repeat keys are not triggered
+
+    document.addEventListener('keydown', event => {
+      usingPointer = false;
+      if (event.keyCode === keyCode && bodyOrContext(context)) {
+        event.preventDefault();
+        if (isKeydown) {
+          return;
+        }
+        handleDown(event);
+        context.focus();
+      }
+      isKeydown = true;
+    }, false)
+    document.addEventListener('keyup', event => {
+      usingPointer = false;
+      isKeydown = false;
+      if (event.keyCode === keyCode && bodyOrContext(context)) {
+        event.preventDefault();
+        handleUp(event);
+        context.focus();
+      }
+    }, false)
+  }
+
   var readyTime = -1
   var startTime = -1
   var endTime = -1
@@ -91,17 +99,20 @@ function Timer(callback) {
   $timer.addEventListener('pointerdown', handlePointerDown)
   $timer.addEventListener('pointercancel', handlePointerCancel)
   $timer.addEventListener('pointerup', handlePointerUp)
-  
+
+  // NVDA uses clicks not keyevents (http://unobfuscated.blogspot.co.uk/2013/05/event-handlers-and-screen-readers.html)
+  $timer.addEventListener('click', handleClick)
+
   addKeyListener($timer, 32, handlePointerDown, handlePointerUp)
   addKeyListener($timer, 13, handlePointerDown, handlePointerUp)
-    
+
   if (window.DeviceMotionEvent) {
     window.addEventListener("devicemotion", function(event) {
       var movement = Math.abs(event.acceleration.z)
-      
+
       var hasWaitedAfterStarting = ((currentTime - startTime) > STARTING_THRESHOLD)
-      
-      if (movement >= MOVEMENT_THRESHOLD) { 
+
+      if (movement >= MOVEMENT_THRESHOLD) {
         if (state === 'running' && hasWaitedAfterStarting) {
           callback(currentTime - startTime)
           stopTimer()
@@ -111,7 +122,22 @@ function Timer(callback) {
     }, true);
   }
 
+  function handleClick () {
+    if (usingPointer) {
+      return
+    }
+    if (state === 'running') {
+      callback(currentTime - startTime)
+      stopTimer()
+      debug('click:stopTimer()')
+    } else if (state === 'idle') {
+      startTimer()
+      debug('click:startTimer()')
+    }
+  }
+
   function handlePointerDown () {
+    usingPointer = true;
     if (state === 'running') {
       callback(currentTime - startTime)
       stopTimer()
@@ -123,11 +149,13 @@ function Timer(callback) {
   }
 
   function handlePointerCancel () {
+    usingPointer = true;
     stopTimer()
     debug('cancel:stopTimer()')
   }
 
   function handlePointerUp (event) {
+    usingPointer = true;
     // See if they have waited after first pressing down
     var hasWaitedBeforeStarting = ((currentTime - readyTime) > READY_THRESHOLD)
     hasWaitedBeforeStarting = true
@@ -156,7 +184,7 @@ function Timer(callback) {
     state = 'idle'
     endTime = currentTime
   }
-  
+
   function getTimestamp () {
     var hasPerformanceApi = (
       window.performance &&
