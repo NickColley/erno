@@ -5,6 +5,9 @@ if (!hasNativePE) {
 
 import { ENV } from '../constants.js'
 
+import Wakelock from './wakelock.js'
+const wakelock = new Wakelock()
+
 import Scrambo from 'scrambo'
 import './style.css'
 
@@ -181,11 +184,13 @@ function Timer(callback) {
     state = 'running'
     announce = 'timer running'
     startTime = currentTime
+    wakelock.start()
   }
 
   function stopTimer () {
     state = 'idle'
     endTime = currentTime
+    wakelock.stop()
   }
 
   function getTimestamp () {
