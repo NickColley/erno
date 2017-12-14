@@ -315,7 +315,7 @@ function randomiseCube() {
 
   const middleCubieIndex = 4
 
-  logoCubies.forEach((logoCubie, index) => {
+  Array.prototype.forEach.call(logoCubies, (logoCubie, index) => {
     const isMiddleCubie = index === middleCubieIndex
     const cubieColor = isMiddleCubie ? 'green' : randomColor()
     logoCubie.setAttribute('class', `logo__cubie logo__cubie--${cubieColor}`);
