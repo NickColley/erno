@@ -28,7 +28,8 @@ module.exports = merge.smart(common, {
     new UglifyJSPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new HtmlPlugin(Object.assign(HTML_WEBPACK_PLUGIN_OPTIONS, {
-      inlineSource: 'registerServiceWorker|style'
+      inlineSource: 'registerServiceWorker|style',
+      favicon:  path.resolve(__dirname, 'src/favicon.ico')
     })),
     new HtmlInlineSourcePlugin(),
     new PWAManifestPlugin({
@@ -40,7 +41,7 @@ module.exports = merge.smart(common, {
       icons: [
         {
           src: path.resolve(__dirname, 'src/icon.png'),
-          sizes: [96, 128, 192, 256, 384, 512]
+          sizes: [192]
         }
       ]
     }),
